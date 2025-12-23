@@ -12,6 +12,9 @@ import requests
 import json
 import urllib.parse
 
+import platform
+import subprocess
+
 class moodeCurrentSong:
 
     CURRENT_ARTIST="artist"
@@ -166,8 +169,13 @@ class moodeCurrentSong:
         for x in range(result['_count']):
             result = json_request(command=f"player name {x} ?")
 
-            #moodeutl -q "select value from cfg_sl where param='PLAYERNAME'"
-            if result['_name']=="Moode930":
+            if platform.machine()=="aarch64":
+                host = subprocess.run(["""moodeutl -q "select value from cfg_sl where param='PLAYERNAME'" """], capture_output=True, text=True, shell=True, executable="/bin/bash").stdout.rstrip('\r\n').lower()
+                print(f"DEBUG: host={host}")
+            else:
+                host="moode930"
+
+            if result['_name'].lower() == host.lower():
                 try:
                     result = json_request(command=f"player id {x} ?")
                     id=result['_id']
