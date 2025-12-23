@@ -171,7 +171,7 @@ class moodeCurrentSong:
 
             if platform.machine()=="aarch64":
                 host = subprocess.run(["""moodeutl -q "select value from cfg_sl where param='PLAYERNAME'" """], capture_output=True, text=True, shell=True, executable="/bin/bash").stdout.rstrip('\r\n').lower()
-                print(f"DEBUG: host={host}")
+                # print(f"DEBUG: host={host}")
             else:
                 host="moode930"
 
